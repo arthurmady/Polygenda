@@ -15,28 +15,25 @@ const Agenda = () => {
   const { settings } = useSettings()
   const [cookies, setCookies] = useCookies(['current_date'])
   const calendarRef = useRef<SchedulerRef>(null)
-  const { events, colors } = useEvents()
+  const { events } = useEvents()
 
   const initialDate = cookies.current_date
     ? getMax(new Date(cookies.current_date), new Date())
-    : new Date();
+    : new Date()
 
   useEffect(() => {
-    if(calendarRef.current) {
+    if (calendarRef.current) {
       calendarRef.current.scheduler.handleState(events.length === 0, 'loading')
     }
   }, [events.length])
 
   useEffect(() => {
-    if(calendarRef.current) {
+    if (calendarRef.current) {
       calendarRef.current.scheduler.handleState(settings.agendaMode, 'agenda')
     }
   }, [settings.agendaMode])
 
-
-
   return (
-    <>
     <Scheduler
       ref={calendarRef}
       height={650}
@@ -73,15 +70,8 @@ const Agenda = () => {
       viewerExtraComponent={(fields, event) => (
         <ViewerExtraComponent fields={fields} event={event as SchoolEvent} />
       )}
-      events={events.map((e) => ({
-        ...e,
-        title: e.subject,
-        color: colors.length ? colors[e[settings.colorMode]] : '#1E5E90',
-        start: new Date(e.start),
-        end: new Date(e.end),
-      }))}
+      events={events}
     />
-    </>
   )
 }
 

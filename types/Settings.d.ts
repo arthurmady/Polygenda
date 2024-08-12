@@ -9,6 +9,7 @@ interface Promo {
 type ColorMode = 'default' | 'subject' | 'sizegroup'
 
 interface Settings {
+  groups: Record<Promo['code'], Record<SchoolEvent['subject'], Array<SchoolEvent['group']>>>
   showWeekends: boolean
   agendaMode: boolean
   promo: Promo | null

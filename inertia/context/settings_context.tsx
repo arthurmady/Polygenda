@@ -16,6 +16,8 @@ const defaultSettings = {
   promo: null,
   rangeHours: [8, 18] as [DayHours, DayHours],
   colorMode: 'default' as ColorMode,
+  agendaMode: false,
+  groups: {},
 }
 
 const SettingsContext = createContext<{

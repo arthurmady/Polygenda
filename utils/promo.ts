@@ -1,4 +1,4 @@
-import { Promo } from "../types/Settings.js"
+import { Promo } from '../types/Settings.js'
 
 const promos = [
   {

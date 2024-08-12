@@ -39,6 +39,6 @@ a {
   align-items: baseline !important;
 }
 
-[aria-label="Agenda"] {
+[aria-label='Agenda'] {
   display: none !important;
 }

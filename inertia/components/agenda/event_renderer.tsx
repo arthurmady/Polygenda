@@ -29,7 +29,7 @@ const EventRenderer = ({
         color: theme.palette.primary.contrastText,
       }}
     >
-      <EventrendererTime {...event}/>
+      <EventrendererTime {...event} />
       <EventRendererSubject {...event} />
       <EventRendererRooms {...event} />
     </Stack>

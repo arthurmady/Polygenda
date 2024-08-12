@@ -1,11 +1,9 @@
-import { Typography } from "@mui/material"
+import { Typography } from '@mui/material'
 import ApartmentIcon from '@mui/icons-material/Apartment'
 
-const ExtraBuildings = ({ rooms } : Pick<SchoolEvent, 'rooms'>) => {
-  if(!rooms) return
-  const buildings = !rooms?.length
-    ? []
-    : [...new Set(rooms?.map((r: Room) => r.building))]
+const ExtraBuildings = ({ rooms }: Pick<SchoolEvent, 'rooms'>) => {
+  if (!rooms) return
+  const buildings = !rooms?.length ? [] : [...new Set(rooms?.map((r: Room) => r.building))]
   const types = !rooms?.length ? [] : [...new Set(rooms?.map((r: Room) => r.type))]
   const names = !rooms?.length ? [] : [...new Set(rooms?.map((r: Room) => r.name))]
 

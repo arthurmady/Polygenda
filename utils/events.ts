@@ -6,8 +6,8 @@ const transformDate = (input: string) => {
     '$1-$2-$3T$4:$5:$6Z'
   )
   const date = new Date(formattedDateString)
-  const offset = date.getTimezoneOffset() / 60;
-  return new Date(date.getTime() + offset * 60 * 60 * 1000);
+  const offset = date.getTimezoneOffset() / 60
+  return new Date(date.getTime() + offset * 60 * 60 * 1000)
 }
 
 const transform = (data: RemoteData[], group: Promo['label']): SchoolEvent[] => {
@@ -19,19 +19,24 @@ const transform = (data: RemoteData[], group: Promo['label']): SchoolEvent[] => 
     result['event_id'] = i
     //result['cours'] = titleParts[index].trim()
     let cours = titleParts[index].trim().replace(/^-+/, '')
-    if (cours.indexOf(group) !== -1) {
-      cours = cours.slice(cours.indexOf(group) + group.length + 1).trim()
-    }
-    if (cours.includes('-')) {
-      const courseParts = cours.split('-').map((part: string) => part.trim())
-
-      result['subject'] = courseParts[0]
-
-      if (courseParts[1]) {
-        result['sizegroup'] = courseParts[1].replace(/\s?\d+/g, '').trim()
-      }
+    if (cours === group) {
+      index++
+      result['subject'] = titleParts[index]
     } else {
-      result['subject'] = cours
+      if (cours.indexOf(group) !== -1) {
+        cours = cours.slice(cours.indexOf(group) + group.length + 1).trim()
+      }
+      if (cours.includes('-')) {
+        const courseParts = cours.split('-').map((part: string) => part.trim())
+
+        result['subject'] = courseParts[0]
+
+        if (courseParts[1]) {
+          result['sizegroup'] = courseParts[1].replace(/\s?\d+/g, '').trim()
+        }
+      } else {
+        result['subject'] = cours
+      }
     }
     index++
 

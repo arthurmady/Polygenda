@@ -1,4 +1,4 @@
-import { ProcessedEvent } from "@aldabil/react-scheduler/types"
+import { ProcessedEvent } from '@aldabil/react-scheduler/types'
 
 type Professor = string
 

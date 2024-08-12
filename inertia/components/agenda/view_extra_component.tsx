@@ -5,13 +5,7 @@ import ExtraProfessors from './extra/professors'
 import ExtraDetails from './extra/details'
 import { SchoolEvent } from '~/types/Event'
 
-const viewerExtraComponent = ({
-  fields,
-  event,
-}: {
-  fields: FieldProps[]
-  event: SchoolEvent
-}) => {
+const viewerExtraComponent = ({ fields, event }: { fields: FieldProps[]; event: SchoolEvent }) => {
   return (
     <>
       {/* <Divider /> */}
