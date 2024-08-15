@@ -41,7 +41,8 @@ const HoursSlider = ({
     <FormGroup>
       <FormLabel component="legend">Définition des horaires d'une journée</FormLabel>
       <Slider
-        sx={{ marginTop: '50px' }}
+        size="small"
+        sx={{ marginTop: '25px' }}
         valueLabelFormat={(val) => val + 'h'}
         value={value}
         onChange={handleChange}
@@ -49,7 +50,7 @@ const HoursSlider = ({
         valueLabelDisplay="on"
         min={0}
         max={24}
-        marks={marks}
+        marks={[0, 24, 12, 8, 18].map((v) => ({ value: v, label: v + 'h' }))}
       />
     </FormGroup>
   )

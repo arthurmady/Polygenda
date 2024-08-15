@@ -1,18 +1,26 @@
-import { Box, AppBar, Toolbar, Typography } from '@mui/material'
+import { AppBar, Toolbar, Typography } from '@mui/material'
 import SettingsDialog from './settings_dialog'
+import ShareDialog from './share_dialog'
+import '@fontsource-variable/teko'
 
 const Navigation = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent" sx={{ flexGrow: 1 }}>
-        <Toolbar disableGutters>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+    <AppBar position="static" color="transparent" sx={{ flexGrow: 1 }}>
+      <Toolbar disableGutters>
+        {/*           <Typography variant="h6" color="inherit" component="div" sx={{ flexGrow: 1 }}>
             <img src={'/public/images/polygenda.png'} style={{ height: '50px' }} />
-          </Typography>
-          <SettingsDialog />
-        </Toolbar>
-      </AppBar>
-    </Box>
+          </Typography> */}
+        <Typography
+          variant="h3"
+          color="primary"
+          sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Teko Variable' }}
+        >
+          POLYGENDA
+        </Typography>
+        <ShareDialog />
+        <SettingsDialog />
+      </Toolbar>
+    </AppBar>
   )
 }
 

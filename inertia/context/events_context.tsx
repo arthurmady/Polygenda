@@ -4,7 +4,7 @@ import { generateColors } from '../utils/colors'
 import { SchoolEvent } from '~/types/Event'
 import { ProcessedEvent } from '@aldabil/react-scheduler/types'
 import { useTheme } from '@mui/material/styles'
-import langs from '~/config/langs'
+import configLangs from '~/config/langs'
 
 const EventsContext = createContext<{ events: ProcessedEvent[] }>({
   events: [],
@@ -51,26 +51,38 @@ export const EventsContextProvider: FC<{ children: ReactNode }> = ({ children })
   }, [events])
 
   const updateEvents = useCallback(
-    (events: SchoolEvent[]): ProcessedEvent[] => {
-      return events
-        .filter(
-          (event) =>
-            !langs.some((lang) => event.subject?.toUpperCase().includes(lang.toUpperCase())) ||
-            (langs.some((lang) => event.subject.toUpperCase().includes(lang.toUpperCase())) &&
-              settings.promo?.code &&
-              settings.groups?.[settings.promo.code]?.[event.subject]?.some(
-                (s) => s === event.group
-              ))
-        )
-        .map((event) => {
-          return {
-            ...event,
-            title: event.subject,
-            color: colors[event[settings.colorMode]] || theme.palette.primary.main,
-            start: new Date(event.start),
-            end: new Date(event.end),
+    (schoolEvents: SchoolEvent[]): ProcessedEvent[] => {
+      return schoolEvents
+        .filter((event) => {
+          if (!settings.promo?.code) {
+            return true
           }
+          // Check if it's a lang
+          if (
+            configLangs.some((lang) => event.subject.toUpperCase().includes(lang.toUpperCase())) &&
+            settings.langs?.[settings.promo.code]?.[event.subject]
+          ) {
+            return settings.langs?.[settings.promo.code]?.[event.subject]?.some(
+              (s) => s === event.group
+            )
+            // Check if it's "global" subject, split with sizegroup (td, tp)
+          } else if (
+            ['TD', 'TP'].some(
+              (sizegroup) => sizegroup?.toUpperCase() === event.sizegroup?.toUpperCase()
+            ) &&
+            settings.groups?.[settings.promo.code]
+          ) {
+            return settings.groups?.[settings.promo.code].indexOf(event.group) !== -1
+          }
+          return true
         })
+        .map((event) => ({
+          ...event,
+          title: event.subject,
+          color: colors[event[settings.colorMode]] || theme.palette.primary.main,
+          start: new Date(event.start),
+          end: new Date(event.end),
+        }))
     },
     [colors, settings]
   )

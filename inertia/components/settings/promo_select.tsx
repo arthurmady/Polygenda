@@ -5,13 +5,15 @@ import { Promo, Settings } from '~/types/Settings'
 const PromoSelect = ({
   value,
   setValue,
+  noLabel = false,
 }: {
   value: Settings['promo']
   setValue: (_newValue: Settings['promo']) => void
+  noLabel: boolean
 }) => {
   return (
     <FormGroup>
-      <FormLabel component="legend">Choix de la promo</FormLabel>
+      {noLabel === false && <FormLabel component="legend">Choix de la promo</FormLabel>}
       <Autocomplete
         isOptionEqualToValue={(o, v) => JSON.stringify(o) === JSON.stringify(v)}
         disablePortal

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -14,13 +15,20 @@ import ShowWeekendCheckBox from './settings/showweekend_checkbox'
 import AgendaModeCheckbox from './settings/agendamode_checkbox'
 import ColormodeSelect from './settings/colormode_select'
 import HoursSlider from './settings/hours_slider'
-import { Promo, Settings } from '../../types/Settings'
+import { Settings } from '../../types/Settings'
 import { useSettings } from '../context/settings_context'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
-import GroupSelect from './settings/group_select'
+import LangGroupsSelect from './settings/langgroups_select'
+import GroupsSelect from './settings/groups_select'
+import Tab from '@mui/material/Tab'
+import TabContext from '@mui/lab/TabContext'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+import MainColorPicker from './settings/maincolor_picker'
 
 const SettingsDialog = () => {
   const [open, setOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('general')
   const { settings, setSettings } = useSettings()
   const [localSettings, setLocalSettings] = useState<Settings>(useMemo(() => settings, [settings]))
 
@@ -39,21 +47,11 @@ const SettingsDialog = () => {
     setOpen(false)
   }
 
-  const groups = useMemo(() => {
-    if (!localSettings.promo?.code || !localSettings.groups?.[localSettings.promo.code]) return []
-    return localSettings.groups?.[localSettings.promo.code]
-      ? Object.entries(localSettings.groups?.[localSettings.promo.code]).flatMap(
-          ([subject, groups]) => groups.map((group) => `${subject}-${group}`)
-        )
-      : []
-  }, [localSettings.promo?.code, localSettings.groups])
-
   return (
     <>
       <Button
         variant="text"
         onClick={() => setOpen(true)}
-        startIcon={<SettingsOutlinedIcon />}
         sx={
           settings.promo
             ? {}
@@ -67,7 +65,7 @@ const SettingsDialog = () => {
               }
         }
       >
-        Paramètres
+        <SettingsOutlinedIcon />
       </Button>
       <Dialog
         fullWidth={true}
@@ -75,57 +73,70 @@ const SettingsDialog = () => {
         onClose={handleCancel}
         PaperProps={{
           component: 'form',
+          sx: { minHeight: '70%' },
           onSubmit: () => {
             setSettings(localSettings)
             setOpen(false)
           },
         }}
       >
-        <DialogTitle>Paramètres</DialogTitle>
         <DialogContent dividers={true}>
-          <Stack spacing={2}>
-            <PromoSelect
-              value={localSettings.promo}
-              setValue={(newValue) => updateLocalSettings('promo', newValue)}
-            />
-            <GroupSelect
-              code={localSettings.promo?.code}
-              value={groups}
-              setValue={(newValues: string[]) => {
-                if (!localSettings.promo?.code) return []
-                const oldGroups: Settings['groups'][Promo['code']] = {}
-                newValues.forEach((newValue) => {
-                  const [subject, group] = newValue.split('-')
-                  oldGroups[subject] = oldGroups[subject] || []
-                  oldGroups[subject].push(group)
-                })
-                updateLocalSettings('groups', {
-                  ...localSettings.groups,
-                  [localSettings.promo.code]: oldGroups,
-                })
-              }}
-            />
-
-            <HoursSlider
-              value={localSettings.rangeHours}
-              setValue={(newValue) => updateLocalSettings('rangeHours', newValue)}
-            />
-            <FormGroup>
-              <FormLabel component="legend">Personnalisation de l'affichage</FormLabel>
-              <AgendaModeCheckbox
-                value={localSettings.agendaMode}
-                setValue={(newValue) => updateLocalSettings('agendaMode', newValue)}
-              />
-              <ShowWeekendCheckBox
-                value={localSettings.showWeekends}
-                setValue={(newValue) => updateLocalSettings('showWeekends', newValue)}
-              />
-            </FormGroup>
-            <ColormodeSelect
-              value={localSettings.colorMode}
-              setValue={(newValue) => updateLocalSettings('colorMode', newValue)}
-            />
-          </Stack>
+          <TabContext value={activeTab}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList
+                onChange={(e: any, newValue: string) => setActiveTab(newValue)}
+                aria-label="lab API tabs example"
+              >
+                <Tab label="Général" value="general" />
+                <Tab label="Affichage" value="affichage" />
+              </TabList>
+            </Box>
+            <TabPanel value="general">
+              <Stack spacing={3}>
+                <PromoSelect
+                  value={localSettings.promo}
+                  setValue={(newValue) => updateLocalSettings('promo', newValue)}
+                />
+                <GroupsSelect
+                  code={localSettings.promo?.code}
+                  value={localSettings.groups}
+                  setValue={(newValue) => updateLocalSettings('groups', newValue)}
+                />
+                <LangGroupsSelect
+                  code={localSettings.promo?.code}
+                  value={localSettings.langs}
+                  setValue={(newValue) => updateLocalSettings('langs', newValue)}
+                />
+              </Stack>
+            </TabPanel>
+            <TabPanel value="affichage">
+              <Stack spacing={3}>
+                <MainColorPicker
+                  value={localSettings.color}
+                  setValue={(newValue) => updateLocalSettings('color', newValue)}
+                />
+                <HoursSlider
+                  value={localSettings.rangeHours}
+                  setValue={(newValue) => updateLocalSettings('rangeHours', newValue)}
+                />
+                <FormGroup>
+                  <FormLabel component="legend">Personnalisation de l'affichage</FormLabel>
+                  <AgendaModeCheckbox
+                    value={localSettings.agendaMode}
+                    setValue={(newValue) => updateLocalSettings('agendaMode', newValue)}
+                  />
+                  <ShowWeekendCheckBox
+                    value={localSettings.showWeekends}
+                    setValue={(newValue) => updateLocalSettings('showWeekends', newValue)}
+                  />
+                </FormGroup>
+                <ColormodeSelect
+                  value={localSettings.colorMode}
+                  setValue={(newValue) => updateLocalSettings('colorMode', newValue)}
+                />
+              </Stack>
+            </TabPanel>
+          </TabContext>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
           <Button onClick={handleCancel}>Annuler</Button>

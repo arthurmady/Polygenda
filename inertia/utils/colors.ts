@@ -1,4 +1,6 @@
-function hslToHex(h: number, s: number, l: number) {
+import { Settings } from '../../types/Settings'
+
+export const hslToHex = (h: number, s: number, l: number) => {
   l /= 100
   const a = (s * Math.min(l, 1 - l)) / 100
   const f = (n: number) => {
@@ -20,4 +22,12 @@ export const generateColors = (count: number) => {
     colors.push(color)
   }
   return colors
+}
+
+export const getContrastYIQ = (hexcolor: Settings['color']) => {
+  var r = Number.parseInt(hexcolor.substring(1, 3), 16)
+  var g = Number.parseInt(hexcolor.substring(3, 5), 16)
+  var b = Number.parseInt(hexcolor.substring(5, 7), 16)
+  var yiq = (r * 299 + g * 587 + b * 114) / 1000
+  return yiq >= 128 ? 'black' : 'white'
 }
