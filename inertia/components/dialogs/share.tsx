@@ -110,7 +110,7 @@ const ShareDialog = () => {
         <DialogActions sx={{ justifyContent: 'space-between' }}>
           <Button onClick={() => setOpen(false)}>Fermer</Button>
           <Button
-            variant="contained"
+            variant="outlined"
             onClick={() =>
               navigator.share({
                 url: link,

@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { ReactNode } from 'react'
-import { useSettings } from './settings_context'
+import { useSettings } from '~/context/settings_context'
 import { getContrastYIQ } from '~/utils/colors'
 
 const CustomThemeProvider = ({ children }: { children: ReactNode }) => {

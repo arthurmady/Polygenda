@@ -3,29 +3,6 @@ import { SyntheticEvent } from 'react'
 import { Settings } from '../../../types/Settings'
 import { DayHours } from '@aldabil/react-scheduler/types'
 
-const marks = [
-  {
-    value: 0,
-    label: '0h',
-  },
-  {
-    value: 24,
-    label: '24h',
-  },
-  {
-    value: 12,
-    label: '12h',
-  },
-  {
-    value: 8,
-    label: '8h',
-  },
-  {
-    value: 18,
-    label: '18h',
-  },
-]
-
 const HoursSlider = ({
   value,
   setValue,

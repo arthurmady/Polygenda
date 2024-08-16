@@ -1,20 +1,25 @@
 import Agenda from '~/components/agenda'
 import Navigation from '~/components/navigation'
-import { EventsContextProvider } from '~/context/events_context'
+import { DataContextProvider } from '~/context/data_context'
 import { SettingsContextProvider } from '~/context/settings_context'
-import ThemeProvider from '~/context/theme_context'
+import ThemeContextProvider from '~/context/theme_context'
 import type {} from '@mui/lab/themeAugmentation'
+import type { InferPageProps } from '@adonisjs/inertia/types'
+import EventsController from '#controllers/events_controller'
+import ConfigContextProvider from '~/context/config_context'
 
-const Home = () => {
+const Home = (props: InferPageProps<EventsController, 'api'>) => {
   return (
-    <SettingsContextProvider>
-      <ThemeProvider>
-        <Navigation />
-        <EventsContextProvider>
-          <Agenda />
-        </EventsContextProvider>
-      </ThemeProvider>
-    </SettingsContextProvider>
+    <ConfigContextProvider config={props.config}>
+      <SettingsContextProvider>
+        <ThemeContextProvider>
+          <DataContextProvider>
+            <Navigation />
+            <Agenda />
+          </DataContextProvider>
+        </ThemeContextProvider>
+      </SettingsContextProvider>
+    </ConfigContextProvider>
   )
 }
 export default Home

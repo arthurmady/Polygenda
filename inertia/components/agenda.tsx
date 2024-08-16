@@ -1,13 +1,13 @@
 import { Scheduler } from '@aldabil/react-scheduler'
-import { useSettings } from '../context/settings_context'
-import { useEvents } from '~/context/events_context'
+import { useSettings } from '~/context/settings_context'
+import { useData } from '~/context/data_context'
 import { fr } from 'date-fns/locale'
-import EventRenderer from './agenda/event_renderer'
+import EventRenderer from '~/components/agenda/event_renderer'
 import translations from '~/config/translations'
 import ViewerExtraComponent from './agenda/view_extra_component'
 import { useCookies } from 'react-cookie'
-import { getMax } from '../utils/date'
-import { SchoolEvent } from '~/types/Event'
+import { getMax } from '~/utils/date'
+import { SchoolEvent } from '../../types/Event'
 import { useEffect, useRef } from 'react'
 import { SchedulerRef } from '@aldabil/react-scheduler/types'
 
@@ -15,17 +15,18 @@ const Agenda = () => {
   const { settings } = useSettings()
   const [cookies, setCookies] = useCookies(['current_date'])
   const calendarRef = useRef<SchedulerRef>(null)
-  const { events } = useEvents()
+  const { events } = useData()
 
   const initialDate = cookies.current_date
     ? getMax(new Date(cookies.current_date), new Date())
     : new Date()
 
+  /*
   useEffect(() => {
     if (calendarRef.current) {
       calendarRef.current.scheduler.handleState(events.length === 0, 'loading')
     }
-  }, [events.length])
+  }, [events.length]) */
 
   useEffect(() => {
     if (calendarRef.current) {

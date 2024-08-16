@@ -1,6 +1,6 @@
 import { FormGroup, FormLabel } from '@mui/material'
 import { Color, ColorPicker, useTranslate } from 'material-ui-color'
-import { frFR } from '../../config/colors'
+import { frFR } from '~/config/colors'
 import { Settings } from '../../../types/Settings'
 
 const MainColorPicker = ({

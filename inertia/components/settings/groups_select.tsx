@@ -1,6 +1,8 @@
 import { Autocomplete, Checkbox, FormGroup, FormLabel, TextField } from '@mui/material'
 import { Settings, Promo } from '../../../types/Settings'
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
+import { useData } from '~/context/data_context'
+import { useMemo } from 'react'
 
 const GroupsSelect = ({
   code,
@@ -11,10 +13,10 @@ const GroupsSelect = ({
   value: Settings['groups']
   setValue: (_newValue: Settings['groups']) => void
 }) => {
-  if (!code) {
-    return null
-  }
+  const { groups } = useData()
+  if (!code || !groups?.length) return null
 
+  const val = useMemo(() => value[code], [code])
   const handleChange = (e: any, values: string[]) => {
     setValue({ ...value, [code]: values })
   }
@@ -25,8 +27,8 @@ const GroupsSelect = ({
       <Autocomplete
         fullWidth
         multiple
-        value={value[code]}
-        options={['Grp1', 'Grp2']}
+        value={val}
+        options={groups}
         disableCloseOnSelect
         onChange={handleChange}
         renderInput={(params) => <TextField {...params} />}

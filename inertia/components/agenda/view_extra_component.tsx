@@ -3,7 +3,7 @@ import ExtraGroup from './extra/group'
 import ExtraBuildings from './extra/buildings'
 import ExtraProfessors from './extra/professors'
 import ExtraDetails from './extra/details'
-import { SchoolEvent } from '~/types/Event'
+import { SchoolEvent } from '../../../types/Event'
 
 const viewerExtraComponent = ({ fields, event }: { fields: FieldProps[]; event: SchoolEvent }) => {
   return (

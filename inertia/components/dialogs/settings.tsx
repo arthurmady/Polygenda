@@ -4,27 +4,26 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormGroup,
   FormLabel,
   Stack,
 } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
-import PromoSelect from './settings/promo_select'
-import ShowWeekendCheckBox from './settings/showweekend_checkbox'
-import AgendaModeCheckbox from './settings/agendamode_checkbox'
-import ColormodeSelect from './settings/colormode_select'
-import HoursSlider from './settings/hours_slider'
-import { Settings } from '../../types/Settings'
-import { useSettings } from '../context/settings_context'
+import PromoSelect from '../settings/promo_select'
+import ShowWeekendCheckBox from '../settings/showweekend_checkbox'
+import AgendaModeCheckbox from '../settings/agendamode_checkbox'
+import ColormodeSelect from '../settings/colormode_select'
+import HoursSlider from '../settings/hours_slider'
+import { Settings } from '../../../types/Settings'
+import { useSettings } from '../../context/settings_context'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
-import LangGroupsSelect from './settings/langgroups_select'
-import GroupsSelect from './settings/groups_select'
+import LangGroupsSelect from '../settings/langgroups_select'
+import GroupsSelect from '../settings/groups_select'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import MainColorPicker from './settings/maincolor_picker'
+import MainColorPicker from '../settings/maincolor_picker'
 
 const SettingsDialog = () => {
   const [open, setOpen] = useState(false)

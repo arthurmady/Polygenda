@@ -1,3 +1,5 @@
+import { ProcessedEvent } from '@aldabil/react-scheduler/types'
+
 type Professor = string
 
 interface Room {
@@ -13,7 +15,8 @@ interface RemoteData {
   start: TDateISO
 }
 
-interface SchoolEvent extends RemoteData {
+interface SchoolEvent extends ProcessedEvent {
+  origin: RemoteData['title']
   event_id: string
   subject: string
   sizegroup: string

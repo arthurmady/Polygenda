@@ -1,5 +1,5 @@
 import { Select, MenuItem, FormGroup, FormLabel } from '@mui/material'
-import { ColorMode, Settings } from '~/types/Settings'
+import { ColorMode, Settings } from '../../../types/Settings'
 
 const ColorModeSelect = ({
   value,

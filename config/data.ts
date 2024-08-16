@@ -1,6 +1,6 @@
-import { Promo } from '../../types/Settings'
-
-const promos = [
+export const langs = ['anglais', 'allemand', 'espagnol', 'portugais', 'english']
+export const sizegroups = ['TD', 'TP']
+export const promos = [
   {
     code: '3YGOGO-120',
     label: '2GU2A3',
@@ -273,6 +273,4 @@ const promos = [
     code: 'GMEQAQ-122',
     label: 'Mastere Ingenieur manager de projets mecatroniques',
   },
-] as Promo[]
-
-export default promos
+]

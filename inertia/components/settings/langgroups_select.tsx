@@ -8,16 +8,9 @@ import {
   TextField,
 } from '@mui/material'
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
-import { useEffect, useState } from 'react'
-import langs from '~/config/langs'
-import { SchoolEvent } from '~/types/Event'
-import { Promo } from '~/types/Settings'
-import { Settings } from '../../../types/Settings'
-
-const fetchRemoteEvents = async (code: Promo['code']) => {
-  const response = await fetch(`/api/${code}`)
-  return response.json()
-}
+import { SchoolEvent } from '../../../types/Event'
+import { Promo, Settings } from '../../../types/Settings'
+import { useData } from '~/context/data_context'
 
 const LangGroupsSelect = ({
   code,
@@ -28,32 +21,8 @@ const LangGroupsSelect = ({
   value: Settings['langs']
   setValue: (_newValue: Settings['langs']) => void
 }) => {
-  const [subjectsWithGroups, setSubjectsWithGroups] = useState<
-    {
-      subject: string
-      group: string
-    }[]
-  >()
-
-  useEffect(() => {
-    if (!code) return
-    fetchRemoteEvents(code).then((events: SchoolEvent[]) => {
-      const langEvents = events.filter(
-        (event) =>
-          langs.some((lang) => event.subject.toUpperCase().includes(lang.toUpperCase())) &&
-          event.group !== null
-      )
-      setSubjectsWithGroups(
-        Array.from(
-          new Map(langEvents.map((event) => [event.subject + '-' + event.group, event])).values()
-        )
-      )
-    })
-  }, [code])
-
-  if (!subjectsWithGroups?.length || !code) {
-    return null
-  }
+  const { langs } = useData()
+  if (!code || !langs?.length) return null
 
   const handleChange = (_e: any, values: Array<Pick<SchoolEvent, 'subject' | 'group'>>) => {
     const newLangs = values.reduce(
@@ -85,13 +54,7 @@ const LangGroupsSelect = ({
         }
         onChange={handleChange}
         multiple
-        options={subjectsWithGroups.sort((a, b) => {
-          if (a.subject < b.subject) return -1
-          if (a.subject > b.subject) return 1
-          if (a.group < b.group) return -1
-          if (a.group > b.group) return 1
-          return 0
-        })}
+        options={langs}
         value={data}
         disableCloseOnSelect
         getOptionLabel={(option) => option.group}

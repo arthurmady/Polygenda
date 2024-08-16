@@ -18,10 +18,13 @@ export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
 
-  /*
-  |----------------------------------------------------------
-  | Variables for configuring session package
-  |----------------------------------------------------------
-  */
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory'] as const),
+
+  API_URL: Env.schema.string({ format: 'url' }),
+  CACHE_TTL: Env.schema.string(),
+  CACHE_GRACEPERIOD_ENABLED: Env.schema.boolean(),
+  CACHE_GRACEPERIOD_DURATION: Env.schema.string(),
+  CACHE_GRACEPERIOD_FALLBACKDURATION: Env.schema.string(),
+
+  SOURCE_URL: Env.schema.string({ format: 'url' }),
 })

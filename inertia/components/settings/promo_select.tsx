@@ -1,6 +1,6 @@
 import { Autocomplete, FormGroup, FormLabel, TextField } from '@mui/material'
-import promos from '../../config/promo'
-import { Promo, Settings } from '~/types/Settings'
+import { Promo, Settings } from '../../../types/Settings'
+import { useConfig } from '~/context/config_context'
 
 const PromoSelect = ({
   value,
@@ -9,8 +9,10 @@ const PromoSelect = ({
 }: {
   value: Settings['promo']
   setValue: (_newValue: Settings['promo']) => void
-  noLabel: boolean
+  noLabel?: boolean
 }) => {
+  const { promos } = useConfig()
+
   return (
     <FormGroup>
       {noLabel === false && <FormLabel component="legend">Choix de la promo</FormLabel>}
