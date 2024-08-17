@@ -1,3 +1,4 @@
+import { SchoolEvent } from '../types/Event.js'
 import { Promo } from '../types/Settings.js'
 
 const transformDate = (input: string) => {
@@ -10,7 +11,7 @@ const transformDate = (input: string) => {
   return new Date(date.getTime() + offset * 60 * 60 * 1000)
 }
 
-const transform = (data: RemoteData[], group: Promo['label']): SchoolEvent[] => {
+const transform = (data: any[], group: Promo['label']): SchoolEvent[] => {
   return data.map((event, i) => {
     const titleParts = event.title.split(' - ')
     let result: any = {}
@@ -66,16 +67,16 @@ const transform = (data: RemoteData[], group: Promo['label']): SchoolEvent[] => 
     const professorMatches = event.title
       .split('\n')
       .filter(
-        (line) =>
+        (line: string) =>
           line.trim().length > 0 &&
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžæÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+/u.test(
             line.trim()
           )
       )
       .slice(1)
-    result['professors'] = professorMatches
-      .map((prof) => prof.trim())
-      .map((prof) => prof.replace(/X[0-9]*$/, '').trim())
+    result['professors'] = professorMatches.map((prof: string) =>
+      prof.trim().replace(/X[0-9]*$/, '')
+    )
 
     const groupMatch = event.title.match(/Grp[0-9]/g)
     result['group'] = groupMatch ? groupMatch[0] : null

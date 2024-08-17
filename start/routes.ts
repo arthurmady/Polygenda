@@ -12,3 +12,11 @@ import router from '@adonisjs/core/services/router'
 router.get('/api/:code', [EventsController, 'api'])
 
 router.on('/').renderInertia('home')
+
+router.get(
+  '/robots.txt',
+  () => `
+  User-agent: *
+  Disallow: /
+`
+)
