@@ -4,9 +4,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogTitle,
   FormGroup,
   FormLabel,
   Stack,
+  Typography,
 } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 import PromoSelect from '../settings/promo_select'
@@ -24,6 +26,7 @@ import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import MainColorPicker from '../settings/maincolor_picker'
+import { MetadataContextProvider } from '~/context/metadata_context'
 
 const SettingsDialog = () => {
   const [open, setOpen] = useState(false)
@@ -67,6 +70,7 @@ const SettingsDialog = () => {
         <SettingsOutlinedIcon />
       </Button>
       <Dialog
+        fullScreen={window.innerWidth < 768}
         fullWidth={true}
         open={open}
         onClose={handleCancel}
@@ -79,7 +83,12 @@ const SettingsDialog = () => {
           },
         }}
       >
-        <DialogContent dividers={true}>
+        <DialogTitle>
+          <Typography variant="inherit" color="primary">
+            PARAMETRES
+          </Typography>
+        </DialogTitle>
+        <DialogContent dividers={true} sx={{ p: 0 }}>
           <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList
@@ -92,20 +101,22 @@ const SettingsDialog = () => {
             </Box>
             <TabPanel value="general">
               <Stack spacing={3}>
-                <PromoSelect
-                  value={localSettings.promo}
-                  setValue={(newValue) => updateLocalSettings('promo', newValue)}
-                />
-                <GroupsSelect
-                  code={localSettings.promo?.code}
-                  value={localSettings.groups}
-                  setValue={(newValue) => updateLocalSettings('groups', newValue)}
-                />
-                <LangGroupsSelect
-                  code={localSettings.promo?.code}
-                  value={localSettings.langs}
-                  setValue={(newValue) => updateLocalSettings('langs', newValue)}
-                />
+                <MetadataContextProvider code={localSettings.promo?.code}>
+                  <PromoSelect
+                    value={localSettings.promo}
+                    setValue={(newValue) => updateLocalSettings('promo', newValue)}
+                  />
+                  <GroupsSelect
+                    code={localSettings.promo?.code}
+                    value={localSettings.groups}
+                    setValue={(newValue) => updateLocalSettings('groups', newValue)}
+                  />
+                  <LangGroupsSelect
+                    code={localSettings.promo?.code}
+                    value={localSettings.langs}
+                    setValue={(newValue) => updateLocalSettings('langs', newValue)}
+                  />
+                </MetadataContextProvider>
               </Stack>
             </TabPanel>
             <TabPanel value="affichage">
@@ -138,8 +149,10 @@ const SettingsDialog = () => {
           </TabContext>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button onClick={handleCancel}>Annuler</Button>
-          <Button type="submit" variant="contained">
+          <Button onClick={handleCancel} size="large">
+            Annuler
+          </Button>
+          <Button type="submit" variant="contained" size="large">
             Valider
           </Button>
         </DialogActions>

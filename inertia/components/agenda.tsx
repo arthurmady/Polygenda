@@ -1,6 +1,6 @@
 import { Scheduler } from '@aldabil/react-scheduler'
 import { useSettings } from '~/context/settings_context'
-import { useData } from '~/context/data_context'
+import { useEvents } from '~/context/events_context'
 import { fr } from 'date-fns/locale'
 import EventRenderer from '~/components/agenda/event_renderer'
 import translations from '~/config/translations'
@@ -15,7 +15,7 @@ const Agenda = () => {
   const { settings } = useSettings()
   const [cookies, setCookies] = useCookies(['current_date'])
   const calendarRef = useRef<SchedulerRef>(null)
-  const { events } = useData()
+  const events = useEvents()
 
   const initialDate = cookies.current_date
     ? getMax(new Date(cookies.current_date), new Date())
@@ -47,6 +47,12 @@ const Agenda = () => {
       locale={fr}
       translations={translations.agenda}
       onSelectedDateChange={(newDate: Date) => setCookies('current_date', newDate)}
+      month={{
+        weekDays: settings.showWeekends ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4],
+        weekStartOn: 1,
+        startHour: settings.rangeHours[0],
+        endHour: settings.rangeHours[1],
+      }}
       week={{
         weekDays: settings.showWeekends ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4],
         weekStartOn: 1,

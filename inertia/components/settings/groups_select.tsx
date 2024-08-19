@@ -1,9 +1,15 @@
-import { Autocomplete, Checkbox, FormGroup, FormLabel, TextField } from '@mui/material'
+import {
+  Checkbox,
+  FormGroup,
+  FormLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material'
 import { Settings, Promo } from '../../../types/Settings'
-import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
-import { useData } from '~/context/data_context'
-import { useMemo } from 'react'
-
+import { SchoolEvent } from '../../../types/Event'
+import { useMetadata } from '~/context/metadata_context'
 const GroupsSelect = ({
   code,
   value = {},
@@ -13,40 +19,36 @@ const GroupsSelect = ({
   value: Settings['groups']
   setValue: (_newValue: Settings['groups']) => void
 }) => {
-  const { groups } = useData()
+  const { groups } = useMetadata()
+
   if (!code || !groups?.length) return null
 
-  const val = useMemo(() => value[code], [code])
-  const handleChange = (e: any, values: string[]) => {
-    setValue({ ...value, [code]: values })
+  const val = value[code] || []
+  const handleChange = (event: SelectChangeEvent<SchoolEvent[]>) => {
+    const {
+      target: { value: newValue },
+    } = event
+    setValue({ ...value, [code]: typeof newValue === 'string' ? newValue.split(',') : newValue })
   }
 
   return (
     <FormGroup>
       <FormLabel component="legend">Choix des groupes</FormLabel>
-      <Autocomplete
-        fullWidth
+      <Select
         multiple
         value={val}
-        options={groups}
-        disableCloseOnSelect
+        renderValue={(selected) => selected.join(', ')}
         onChange={handleChange}
-        renderInput={(params) => <TextField {...params} />}
-        renderOption={(props, option, { selected }) => {
-          const { key, ...optionProps } = props
+      >
+        {groups.map((group, i) => {
           return (
-            <li key={key} {...optionProps}>
-              <Checkbox
-                icon={<CheckBoxOutlineBlank fontSize="small" />}
-                checkedIcon={<CheckBox fontSize="small" />}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option}
-            </li>
+            <MenuItem key={i} value={group}>
+              <Checkbox checked={val.indexOf(group) > -1} />
+              <ListItemText primary={group} />
+            </MenuItem>
           )
-        }}
-      />
+        })}
+      </Select>
     </FormGroup>
   )
 }

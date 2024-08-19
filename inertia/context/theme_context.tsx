@@ -18,6 +18,10 @@ const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
             main: color,
             contrastText: getContrastYIQ(color),
           },
+          secondary: {
+            main: color,
+            contrastText: getContrastYIQ(color),
+          },
         },
       })}
     >

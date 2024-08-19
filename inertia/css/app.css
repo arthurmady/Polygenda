@@ -5,14 +5,17 @@
   padding: 0;
 }
 
-html,
-body,
-#app {
+html, body {
   background-color: #f7f8fa;
   font-family: 'Poppins', sans-serif;
   color: #46444c;
   height: 100%;
   width: 100%;
+}
+@media (max-width: 768px) {
+  html, body {
+    font-size: 13px;
+  }
 }
 
 .title {
@@ -39,6 +42,20 @@ a {
   align-items: baseline !important;
 }
 
-[aria-label='Agenda'] {
+[aria-label='Agenda'], .MuiButtonBase-root svg[data-testid="ViewAgendaIcon"] {
   display: none !important;
+}
+
+.css-3bmhjh-MuiPaper-root-MuiPopover-paper:not(:has(> ul)) {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+
+.css-3bmhjh-MuiPaper-root-MuiPopover-paper .MuiBox-root {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
 }

@@ -1,6 +1,7 @@
 import { Autocomplete, FormGroup, FormLabel, TextField } from '@mui/material'
 import { Promo, Settings } from '../../../types/Settings'
-import { useConfig } from '~/context/config_context'
+import { promos } from '#config/data'
+import { useMetadata } from '~/context/metadata_context'
 
 const PromoSelect = ({
   value,
@@ -11,7 +12,7 @@ const PromoSelect = ({
   setValue: (_newValue: Settings['promo']) => void
   noLabel?: boolean
 }) => {
-  const { promos } = useConfig()
+  const { setCode } = useMetadata()
 
   return (
     <FormGroup>
@@ -22,6 +23,9 @@ const PromoSelect = ({
         options={promos}
         value={value}
         onChange={(e: any, newValue: Promo | null) => {
+          if (newValue?.code) {
+            setCode(newValue?.code)
+          }
           setValue(newValue)
         }}
         renderInput={(params) => <TextField {...params} />}

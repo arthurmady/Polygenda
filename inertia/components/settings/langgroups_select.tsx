@@ -1,16 +1,14 @@
 import {
-  Autocomplete,
-  AutocompleteGetTagProps,
   Checkbox,
-  Chip,
   FormGroup,
   FormLabel,
-  TextField,
+  ListItemText,
+  ListSubheader,
+  MenuItem,
+  Select,
 } from '@mui/material'
-import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
-import { SchoolEvent } from '../../../types/Event'
 import { Promo, Settings } from '../../../types/Settings'
-import { useData } from '~/context/data_context'
+import { useMetadata } from '~/context/metadata_context'
 
 const LangGroupsSelect = ({
   code,
@@ -21,20 +19,31 @@ const LangGroupsSelect = ({
   value: Settings['langs']
   setValue: (_newValue: Settings['langs']) => void
 }) => {
-  const { langs } = useData()
+  const { langs } = useMetadata()
   if (!code || !langs?.length) return null
 
-  const handleChange = (_e: any, values: Array<Pick<SchoolEvent, 'subject' | 'group'>>) => {
-    const newLangs = values.reduce(
-      (acc, { subject, group }) => {
-        if (!acc[subject]) {
-          acc[subject] = []
-        }
-        acc[subject].push(group)
-        return acc
-      },
-      {} as Settings['langs'][Promo['code']]
-    )
+  const handleChange = (newValue: { subject: string; group: string }, remove = false) => {
+    const newLangs = { ...value[code] }
+
+    const { subject, group } = newValue
+
+    if (remove) {
+      // Remove the group from the selected subject
+      newLangs[subject] = newLangs[subject].filter((g) => g !== group)
+
+      // If no groups are left for the subject, remove the subject entry
+      if (newLangs[subject].length === 0) {
+        delete newLangs[subject]
+      }
+    } else {
+      // Add the group to the selected subject
+      if (!newLangs[subject]) {
+        newLangs[subject] = []
+      }
+
+      newLangs[subject].push(group)
+    }
+
     setValue({ ...value, [code]: newLangs })
   }
 
@@ -44,46 +53,33 @@ const LangGroupsSelect = ({
       )
     : []
 
+  let currentSubject: string
   return (
     <FormGroup>
       <FormLabel component="legend">Choix des groupes de langue</FormLabel>
-      <Autocomplete
-        fullWidth
-        isOptionEqualToValue={(optionLang, selectedLang) =>
-          optionLang.group === selectedLang.group && optionLang.subject === selectedLang.subject
-        }
-        onChange={handleChange}
+      <Select
         multiple
-        options={langs}
         value={data}
-        disableCloseOnSelect
-        getOptionLabel={(option) => option.group}
-        groupBy={(option) => option.subject.toUpperCase()}
-        renderOption={(props, option, { selected }) => {
-          const { key, ...optionProps } = props
-          return (
-            <li key={key} {...optionProps}>
-              <Checkbox
-                icon={<CheckBoxOutlineBlank fontSize="small" />}
-                checkedIcon={<CheckBox fontSize="small" />}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.group}
-            </li>
+        renderValue={(selected) => selected.map((s) => s.subject + '-' + s.group).join(', ')}
+        //onChange={handleChange}
+      >
+        {langs.map(({ subject, group }, i) => {
+          const result = []
+          if (currentSubject !== subject) {
+            currentSubject = subject
+            result.push(<ListSubheader>{subject}</ListSubheader>)
+          }
+          const checked = !!data.find((d) => d.group === group && d.subject === subject)
+          result.push(
+            <MenuItem key={i} onClick={() => handleChange({ subject, group }, checked)}>
+              <Checkbox checked={checked} />
+              <ListItemText primary={group} />
+            </MenuItem>
           )
-        }}
-        renderInput={(params) => <TextField {...params} />}
-        renderTags={(options, getTagProps: AutocompleteGetTagProps) => {
-          return options.map((option, index: number) => (
-            <Chip
-              {...getTagProps({ index })}
-              label={option.subject + '-' + option.group}
-              key={index}
-            />
-          ))
-        }}
-      />
+
+          return result
+        })}
+      </Select>
     </FormGroup>
   )
 }
