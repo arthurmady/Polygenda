@@ -10,12 +10,27 @@ import { getMax } from '~/utils/date'
 import { SchoolEvent } from '../../types/Event'
 import { useEffect, useRef } from 'react'
 import { SchedulerRef } from '@aldabil/react-scheduler/types'
+import useSwipe from '~/hooks/use_swipe'
 
 const Agenda = () => {
   const { settings } = useSettings()
   const [cookies, setCookies] = useCookies(['current_date'])
   const calendarRef = useRef<SchedulerRef>(null)
   const events = useEvents()
+  useSwipe({
+    left: () => {
+      const button = document.querySelector(
+        'button:has([data-testid="NavigateBeforeRoundedIcon"])'
+      ) as HTMLElement
+      button?.click()
+    },
+    right: () => {
+      const button = document.querySelector(
+        'button:has([data-testid="NavigateNextRoundedIcon"])'
+      ) as HTMLElement
+      button?.click()
+    },
+  })
 
   const initialDate = cookies.current_date
     ? getMax(new Date(cookies.current_date), new Date())
