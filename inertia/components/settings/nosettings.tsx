@@ -12,7 +12,7 @@ const NoSettings = () => {
         <Paper elevation={6} sx={{ padding: 4, minWidth: '30%', maxWidth: '80%' }}>
           <Logo />
           <Typography textAlign={'justify'}>
-            Bonjour et bienvenu(e) sur cette application d'emploi du temps de Polytech Lille.
+            Bienvenue sur cette application d'emploi du temps de Polytech Lille.
             <br />
             <br />
             Cette application n'est pas officielle et est la réalisation d'un étudiant.
@@ -20,19 +20,22 @@ const NoSettings = () => {
             Ce projet a été réalisé pour le fun et ne doit en aucun cas être pris pour vérité
             absolue.
             <br />
-            Vous pouvez utiliser cette application autant que vous le souhaitez,
+            Tu peux utiliser cette application autant que tu le souhaites,
             <br />
-            mais ne soyez pas surpris si elle contient des bugs ou des informations erronées.
+            mais ne soit pas surpris si elle contient des bugs ou des informations erronées.
             <br />
-            N'oubliez pas que la vraie info se trouve sur&nbsp;
+            N'oublie pas que la vraie info se trouve sur&nbsp;
             <Link href={'https://sos-salle.polytech-lille.fr/'}>
               https://sos-salle.polytech-lille.fr/
             </Link>
             .<br />
             <br />
-            Si toutefois vous souhaitez au moins voir à quoi cela ressemble,
+            N'hésite pas à m'envoyer un message privé si tu remarques un bug.
             <br />
-            il vous suffit de sélectionner votre promo dans la liste :
+            <br />
+            Si toutefois tu souhaites au moins voir à quoi cela ressemble,
+            <br />
+            il te suffit de sélectionner ta promo dans la liste :
             <PromoSelect
               value={settings.promo}
               setValue={(newPromo) => {
@@ -44,8 +47,6 @@ const NoSettings = () => {
               noLabel={true}
             />
             <br />
-            <br />
-            Cordialement,
             <br />
             Arthur Mady
           </Typography>
